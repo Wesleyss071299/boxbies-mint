@@ -2,7 +2,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+<<<<<<< Updated upstream
 First, run the development server
+=======
+Firsttttttt, run the development server:
+>>>>>>> Stashed changes
 
 ```bash
 npm run dev
