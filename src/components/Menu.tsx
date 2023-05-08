@@ -25,9 +25,9 @@ const Menu = () => {
     <MenuContainer>
       <MenuItem>Open Sea</MenuItem>
       <MenuItem>Magic Eden</MenuItem>
-      <MenuItem href="https://boxbies.gitbook.io/">Litepaper</MenuItem>
-      <MenuItem href="https://twitter.com/boxbies">Twitter</MenuItem>
-      <MenuItem href="https://discord.gg/boxbies">Discord</MenuItem>
+      <MenuItem target="_blank" href="https://boxbies.gitbook.io/">Litepaper</MenuItem>
+      <MenuItem target="_blank" href="https://twitter.com/boxbies">Twitter</MenuItem>
+      <MenuItem target="_blank" href="https://discord.gg/boxbies">Discord</MenuItem>
     </MenuContainer>
   );
 };
