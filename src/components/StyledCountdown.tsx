@@ -29,7 +29,7 @@ const renderer = ({ days, hours, minutes, seconds }: any) => {
 
 const StyledCountdown = ({ onMount, date, onComplete, title }: CountDownProps) => {
   return (
-    <>
+    <div>
       <h4 style={{ color: 'white' }}>{title}</h4>
       <Countdown
         date={date}
@@ -37,7 +37,7 @@ const StyledCountdown = ({ onMount, date, onComplete, title }: CountDownProps) =
         onComplete={onComplete}
         renderer={renderer}
       />
-    </>
+    </div>
   );
 }
 

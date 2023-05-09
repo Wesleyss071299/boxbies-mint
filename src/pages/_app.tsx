@@ -8,6 +8,7 @@ import {
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { polygonMumbai } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
+import { Toaster } from "react-hot-toast";
 
 const { chains, provider } = configureChains(
   [polygonMumbai],
@@ -30,10 +31,25 @@ const wagmiClient = createClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <div suppressHydrationWarning={ true }>
+    {typeof window === 'undefined' ? null : (
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider chains={chains}>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                border: "1px solid #2e2e2e",
+                color: "#FFFFFF",
+                backgroundColor: "#000000",
+              },
+            }}
+          />
+          <Component {...pageProps} />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    )}
+  </div>
+
   ); 
 }

@@ -1,0 +1,12 @@
+{
+  "name": "Boxbies",
+  "description": "Join the box gang",
+  "image": "https://bafybeidbwm6hqwzuukplqisaumcef5sclyljibr4nkconlb5mmog4bysn4.ipfs.nftstorage.link/unrevealed.gif",
+  "edition": 1,
+  "attributes": [
+    {
+      "trait_type": "unrevealed",
+      "value": "unrevealed"
+    }
+  ]
+}
