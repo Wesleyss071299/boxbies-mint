@@ -22,6 +22,7 @@ import { NFTContractAddress, createNFTContract } from '@/utils/getContract'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { BigNumber } from 'ethers'
+import QuantityButton from '@/components/QuantityButton'
 
 // const ogDate = moment('2023-05-10T09:00:00.000Z');
 // const whiteDate = moment('2023-05-10T09:30:00.000Z');
@@ -45,6 +46,7 @@ const Home = () =>  {
   const [isPaused, setIsPaused] = useState(false);
   const [isOnlyOg, setIsOnlyOg] = useState(false);
   const [isOnlyWl, setIsOnlyWl] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   const canMint = useCallback(() => {
     if (isPaused) return false;
@@ -81,10 +83,10 @@ const Home = () =>  {
     setIsPaused(paused);
   }, [contract, address]);
 
-  const mintOne = useCallback(async () => {
-    await toast.promise(contract.methods.mint(1).send({
+  const mint = useCallback(async () => {
+    await toast.promise(contract.methods.mint(quantity).send({
       from: address,
-      value: 1000000000000,
+      value: 1000000000000 * quantity,
     }), {
       loading: "Sending transaction...",
       success: <b>Success</b>,
@@ -92,7 +94,25 @@ const Home = () =>  {
     });
 
     setup();
-  }, [contract, address, setup]);
+  }, [contract, address, setup, quantity]);
+
+  const incrementQuantity = (q:number) => {
+    if (quantity >= 10) {
+      setQuantity(10);
+      return;
+    }
+
+    setQuantity(q + 1);
+  };
+
+  const decrementQuantity = (q: number) => {
+    if (quantity <= 0) {
+      setQuantity(0);
+      return;
+    }
+
+    setQuantity(q - 1);
+  };
 
   useEffect(() => {
     setContract(createNFTContract());
@@ -145,7 +165,12 @@ const Home = () =>  {
               />} */}
               <h3 style={{ color: 'white', marginTop: '1vh' }}>Total Minted { totalMinted } / 1780</h3>
               <BorderLinearProgress  variant='determinate' value={ totalMinted / 1780 * 100 } />
-              { <MintButton src="mint.png" onClick={mintOne}/> }
+              <div style={ { display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', color: 'white' } }>
+                <QuantityButton onClick={() => decrementQuantity(quantity)}style={{ fontSize: '30px', marginRight: '20px' }}>-</QuantityButton>
+                <h3>{ quantity }</h3>
+                <QuantityButton onClick={() => incrementQuantity(quantity)} style={{ fontSize: '30px', marginLeft: '20px' }}>+</QuantityButton>
+              </div>
+              { <MintButton src="mint.png" onClick={mint}/> }
             </NFT>
           </DesContainer>
         </MintContainer>

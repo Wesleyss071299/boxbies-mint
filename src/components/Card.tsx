@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export default styled(Paper)`
   display: inline-block;
+  font-family: Arial;
   color: rgb(181,114,168);
   background-color: white;
   margin: 5px;
