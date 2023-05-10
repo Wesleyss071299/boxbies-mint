@@ -23,8 +23,8 @@ const MenuContainer = styled.div`
 const Menu = () => {
   return (
     <MenuContainer>
-      <MenuItem>Open Sea</MenuItem>
-      <MenuItem>Magic Eden</MenuItem>
+      <MenuItem target="_blank" href="https://opensea.io/collection/boxbies-1">Open Sea</MenuItem>
+      <MenuItem target="_blank" href="https://magiceden.io/collections/polygon/boxbies">Magic Eden</MenuItem>
       <MenuItem target="_blank" href="https://boxbies.gitbook.io/">Litepaper</MenuItem>
       <MenuItem target="_blank" href="https://twitter.com/boxbies">Twitter</MenuItem>
       <MenuItem target="_blank" href="https://discord.gg/boxbies">Discord</MenuItem>

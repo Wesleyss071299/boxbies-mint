@@ -155,30 +155,30 @@ const Home = () =>  {
         {innerWidth && innerWidth > 1000 && <><Boneco src="boneco.png"/></>}
           <DesContainer>
             <NFT>
-              { !canMint() && isOgListed && <StyledCountdown
+              <StyledCountdown
                 title="OG List"
                 date={ogDate.toDate()}
                 onMount={({completed}) => console.log(completed)}
                 onComplete={() => {
                     console.log('completeddddd')
                 }}
-              />}
-              { !canMint() && isWhiteListed && <StyledCountdown
+              />
+              <StyledCountdown
                 title="White List"
                 date={whiteDate.toDate()}
                 onMount={({completed}) => console.log(completed)}
                 onComplete={() => {
                     console.log('completeddddd')
                 }}
-              />}
-             { !canMint() && !isOgListed && !isWhiteListed && <StyledCountdown
+              />
+              <StyledCountdown
                 title="Public"
                 date={publicDate.toDate()}
                 onMount={({completed}) => console.log(completed)}
                 onComplete={() => {
                     console.log('completeddddd')
                 }}
-              />}
+              />
               <h3 style={{ color: 'white', marginTop: '1vh' }}>Total Minted { totalMinted } / 1780</h3>
               <BorderLinearProgress  variant='determinate' value={ totalMinted / 1780 * 100 } />
               { canMint() && <div style={ { display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', color: 'white' } }>
