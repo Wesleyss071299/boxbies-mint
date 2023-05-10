@@ -18,7 +18,7 @@ import  Contract from 'web3-eth-contract';
 import abi from '../abi'
 import Web3 from 'web3'
 import { useCallback, useEffect, useState } from 'react'
-import { NFTContractAddress, createNFTContract } from '@/utils/getContract'
+import { NFTContractAddress, createNFTContract, createNFTContractGet } from '@/utils/getContract'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { BigNumber } from 'ethers'
@@ -39,6 +39,7 @@ const Home = () =>  {
   const [isOnlyOg, setIsOnlyOg] = useState(false);
   const [isOnlyWl, setIsOnlyWl] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const contractGet = createNFTContractGet()
 
   const canMint = useCallback(() => {
     if (!isConnected) return false;
@@ -67,12 +68,12 @@ const Home = () =>  {
       onlyog,
       onlywl
     ] = await Promise.all([
-      contract.methods.mintIndex().call(),
-      address && contract.methods.isWhitelisted(address).call(),
-      address && contract.methods.isOGlisted(address).call(),
-      contract.methods.paused().call(),
-      contract.methods.onlyOGlisted().call(),
-      contract.methods.onlyWhitelisted().call(),
+      contractGet.methods.mintIndex().call(),
+      address && contractGet.methods.isWhitelisted(address).call(),
+      address && contractGet.methods.isOGlisted(address).call(),
+      contractGet.methods.paused().call(),
+      contractGet.methods.onlyOGlisted().call(),
+      contractGet.methods.onlyWhitelisted().call(),
     ]);
 
     console.log({
