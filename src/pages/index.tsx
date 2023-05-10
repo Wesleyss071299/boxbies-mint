@@ -100,11 +100,17 @@ const Home = () => {
 
   const mint = useCallback(async () => {
     try {
+      const { data } = await axios.get(
+        "https://gasstation-mainnet.matic.network/v2"
+      );
+
+      const gasFee = data.estimatedBaseFee;
+
       const gas = await contract.methods
         .mint(quantity)
         .estimateGas({ from: address, value: 10000000000000000000 * quantity });
 
-      const gasPrice = Web3.utils.toWei("600", "Gwei");
+      const gasPrice = Web3.utils.toWei(String(Math.floor(gasFee * 3)), "Gwei");
       await toast.promise(
         contract.methods.mint(quantity).send({
           from: address,
