@@ -34,7 +34,7 @@ const Home = () =>  {
   const [contract, setContract] = useState(createNFTContract());
   const [totalMinted, setTotalMinted] = useState(0);
   const [isWhiteListed, setIsWhiteListed] = useState(false);
-  const [isOgListed, setIsOgListed] = useState(true);
+  const [isOgListed, setIsOgListed] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isOnlyOg, setIsOnlyOg] = useState(false);
   const [isOnlyWl, setIsOnlyWl] = useState(false);
