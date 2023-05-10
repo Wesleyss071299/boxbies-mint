@@ -45,7 +45,7 @@ const Home = () =>  {
   
     if (isPaused) return false;
 
-    // if (moment().isBefore(ogDate)) return false;
+    if (moment().isBefore(ogDate)) return false;
 
     if (isOnlyOg && isOgListed) return true;
 
