@@ -93,10 +93,16 @@ const Home = () =>  {
   }, [contract, address]);
 
   const mint = useCallback(async () => {
+    const gas = await contract.methods.mint(quantity).estimateGas({ from: address,  value: 10000000000000000000 * quantity });
+
+    console.log({ gas });
+
+    const gasPrice = Web3.utils.toWei('300', 'Gwei');
     await toast.promise(contract.methods.mint(quantity).send({
       from: address,
       value: 10000000000000000000 * quantity,
-      gas: 3500000 * quantity
+      gas: gas * 2,
+      gasPrice,
     }), {
       loading: "Sending transaction...",
       success: <b>Success</b>,
@@ -180,7 +186,7 @@ const Home = () =>  {
                 <h3>{ quantity }</h3>
                 <QuantityButton onClick={() => incrementQuantity(quantity)} style={{ fontSize: '30px', marginLeft: '20px' }}>+</QuantityButton>
               </div>}
-              { canMint() && <MintButton src="mint.png" onClick={mint}/> }
+              { !canMint() && <MintButton src="mint.png" onClick={mint}/> }
             </NFT>
           </DesContainer>
         </MintContainer>
