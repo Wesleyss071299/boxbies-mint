@@ -186,7 +186,7 @@ const Home = () =>  {
                 <h3>{ quantity }</h3>
                 <QuantityButton onClick={() => incrementQuantity(quantity)} style={{ fontSize: '30px', marginLeft: '20px' }}>+</QuantityButton>
               </div>}
-              { !canMint() && <MintButton src="mint.png" onClick={mint}/> }
+              { canMint() && <MintButton src="mint.png" onClick={mint}/> }
             </NFT>
           </DesContainer>
         </MintContainer>
