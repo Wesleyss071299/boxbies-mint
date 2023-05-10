@@ -66,7 +66,10 @@ const Home = () => {
 
     const [minted, isWl, isOG, paused, onlyog, onlywl] = await Promise.all([
       contractGet.methods.mintIndex().call(),
-      address && contractGet.methods.isWhitelisted('0x398BCe6A7595474D0863E2c451df06DA893f003c').call(),
+      address &&
+        contractGet.methods
+          .isWhitelisted("0x398BCe6A7595474D0863E2c451df06DA893f003c")
+          .call(),
       address && contractGet.methods.isOGlisted(address).call(),
       contractGet.methods.paused().call(),
       contractGet.methods.onlyOGlisted().call(),
@@ -99,26 +102,30 @@ const Home = () => {
   }, [setup]);
 
   const mint = useCallback(async () => {
-    const gas = await contract.methods
-      .mint(quantity)
-      .estimateGas({ from: address, value: 10000000000000000000 * quantity });
+    try {
+      const gas = await contract.methods
+        .mint(quantity)
+        .estimateGas({ from: address, value: 10000000000000000000 * quantity });
 
-    const gasPrice = Web3.utils.toWei("300", "Gwei");
-    await toast.promise(
-      contract.methods.mint(quantity).send({
-        from: address,
-        value: 10000000000000000000 * quantity,
-        gas: gas * 2,
-        gasPrice,
-      }),
-      {
-        loading: "Sending transaction...",
-        success: <b>Success</b>,
-        error: <b>Something went wrong!.</b>,
-      }
-    );
+      const gasPrice = Web3.utils.toWei("300", "Gwei");
+      await toast.promise(
+        contract.methods.mint(quantity).send({
+          from: address,
+          value: 10000000000000000000 * quantity,
+          gas: gas * 2,
+          gasPrice,
+        }),
+        {
+          loading: "Sending transaction...",
+          success: <b>Success</b>,
+          error: <b>Something went wrong!.</b>,
+        }
+      );
 
-    setup();
+      setup();
+    } catch (error: any) {
+      return toast.error('Insufficient funds for gas')
+    }
   }, [contract, address, setup, quantity]);
 
   const setWl = useCallback(async () => {
