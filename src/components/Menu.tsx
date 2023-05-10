@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const MenuItem = styled.a`
   color: white;
-  font-size: 25px;
+  font-size: 20px;
   text-decoration: none;
   margin-bottom: 20px;
   :hover {
@@ -15,7 +15,7 @@ const MenuContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  min-width: 400px;
+  min-width: 300px;
   width: 40vw;
   margin: 5vh auto 0 auto;
 `;

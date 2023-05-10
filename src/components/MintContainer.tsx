@@ -6,7 +6,8 @@ export default styled.div`
   justify-content: center;
   background-color: #FDA2EB;
   padding: 3vh 6vw;
-  max-width: 50vh;
+  max-width: 25vw;
+  min-width: 300px;
   margin: 0 auto;
   border-radius: 10px;
 `;

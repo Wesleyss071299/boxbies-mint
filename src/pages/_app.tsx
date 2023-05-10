@@ -6,12 +6,13 @@ import {
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { polygonMumbai } from 'wagmi/chains';
+import { polygon, polygonMumbai } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { Toaster } from "react-hot-toast";
+import { useEffect, useState } from 'react';
 
 const { chains, provider } = configureChains(
-  [polygonMumbai],
+  [polygon],
   [
     publicProvider()
   ]
@@ -30,26 +31,31 @@ const wagmiClient = createClient({
 })
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <div suppressHydrationWarning={ true }>
-    {typeof window === 'undefined' ? null : (
-      <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider chains={chains}>
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              style: {
-                border: "1px solid #2e2e2e",
-                color: "#FFFFFF",
-                backgroundColor: "#000000",
-              },
-            }}
-          />
-          <Component {...pageProps} />
-        </RainbowKitProvider>
-      </WagmiConfig>
-    )}
-  </div>
+  const [ready, setReady] = useState(false);
 
+  useEffect(() => {
+    setReady(true);
+  }, [])
+  
+  return (
+    <>
+      {ready ? (
+        <WagmiConfig client={wagmiClient}>
+          <RainbowKitProvider chains={chains}>
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                style: {
+                  border: "1px solid #2e2e2e",
+                  color: "#FFFFFF",
+                  backgroundColor: "#000000",
+                },
+              }}
+            />
+            <Component {...pageProps} />
+          </RainbowKitProvider>
+        </WagmiConfig>
+      ):null}
+    </>
   ); 
 }

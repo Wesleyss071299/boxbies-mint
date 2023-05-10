@@ -4,6 +4,6 @@ import styled from "styled-components";
 export default styled.div`
 font-family: Arial;
   box-shadow: none;
-  min-width: 300px;
+  min-width: 200px;
   border: none;
 `;

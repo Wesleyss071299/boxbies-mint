@@ -24,21 +24,13 @@ import axios from 'axios'
 import { BigNumber } from 'ethers'
 import QuantityButton from '@/components/QuantityButton'
 
-// const ogDate = moment('2023-05-10T09:00:00.000Z');
-// const whiteDate = moment('2023-05-10T09:30:00.000Z');
-// const publicDate = moment('2023-05-10T10:10:00.000Z');
-
-const ogDate = moment('2023-05-10T09:00:00.000Z');
-const whiteDate = moment('2023-05-10T09:30:00.000Z');
-const publicDate = moment('2023-05-10T10:10:00.000Z');
-
-
-// set provider for all later instances to use
-;
+const ogDate = moment('2023-05-10T15:00:00.000Z');
+const whiteDate = moment('2023-05-10T15:30:00.000Z');
+const publicDate = moment('2023-05-10T16:10:00.000Z');
 
 const Home = () =>  {
   const { innerWidth } = useWindowSize();
-  const { isConnected, address } = useAccount();
+  const { address, isConnected } = useAccount();
   const [contract, setContract] = useState(createNFTContract());
   const [totalMinted, setTotalMinted] = useState(0);
   const [isWhiteListed, setIsWhiteListed] = useState(false);
@@ -49,9 +41,11 @@ const Home = () =>  {
   const [quantity, setQuantity] = useState(1);
 
   const canMint = useCallback(() => {
+    if (!isConnected) return false;
+  
     if (isPaused) return false;
 
-    if (moment().isBefore(ogDate)) return false;
+    // if (moment().isBefore(ogDate)) return false;
 
     if (isOnlyOg && isOgListed) return true;
 
@@ -60,7 +54,7 @@ const Home = () =>  {
     if (!isOnlyWl && !isOnlyOg) return true;
 
     return false;
-  }, [isPaused, isOgListed, isWhiteListed, isOnlyOg, isOnlyWl]);
+  }, [isPaused, isOgListed, isWhiteListed, isOnlyOg, isOnlyWl, isConnected]);
 
   const setup = useCallback(async () => {
     if (!contract) return;
@@ -69,24 +63,40 @@ const Home = () =>  {
       minted,
       isWl,
       isOG,
-      paused
+      paused,
+      onlyog,
+      onlywl
     ] = await Promise.all([
       contract.methods.mintIndex().call(),
       address && contract.methods.isWhitelisted(address).call(),
       address && contract.methods.isOGlisted(address).call(),
       contract.methods.paused().call(),
+      contract.methods.onlyOGlisted().call(),
+      contract.methods.onlyWhitelisted().call(),
     ]);
+
+    console.log({
+      minted,
+      isWl,
+      isOG,
+      paused,
+      onlyog,
+      onlywl
+    });
 
     setTotalMinted(Number(minted));
     setIsWhiteListed(isWl);
     setIsOgListed(isOG);
     setIsPaused(paused);
+    setIsOnlyOg(onlyog);
+    setIsOnlyWl(onlywl);
   }, [contract, address]);
 
   const mint = useCallback(async () => {
     await toast.promise(contract.methods.mint(quantity).send({
       from: address,
-      value: 1000000000000 * quantity,
+      value: 10000000000000000000 * quantity,
+      gas: 3500000 * quantity
     }), {
       loading: "Sending transaction...",
       success: <b>Success</b>,
@@ -139,7 +149,7 @@ const Home = () =>  {
         {innerWidth && innerWidth > 1000 && <><Boneco src="boneco.png"/></>}
           <DesContainer>
             <NFT>
-              {/* {isOgListed && <StyledCountdown
+              { !canMint() && isOgListed && <StyledCountdown
                 title="OG List"
                 date={ogDate.toDate()}
                 onMount={({completed}) => console.log(completed)}
@@ -147,7 +157,7 @@ const Home = () =>  {
                     console.log('completeddddd')
                 }}
               />}
-              { isWhiteListed && <StyledCountdown
+              { !canMint() && isWhiteListed && <StyledCountdown
                 title="White List"
                 date={whiteDate.toDate()}
                 onMount={({completed}) => console.log(completed)}
@@ -155,22 +165,22 @@ const Home = () =>  {
                     console.log('completeddddd')
                 }}
               />}
-             { !isOgListed && !isWhiteListed && <StyledCountdown
+             { !canMint() && !isOgListed && !isWhiteListed && <StyledCountdown
                 title="Public"
                 date={publicDate.toDate()}
                 onMount={({completed}) => console.log(completed)}
                 onComplete={() => {
                     console.log('completeddddd')
                 }}
-              />} */}
+              />}
               <h3 style={{ color: 'white', marginTop: '1vh' }}>Total Minted { totalMinted } / 1780</h3>
               <BorderLinearProgress  variant='determinate' value={ totalMinted / 1780 * 100 } />
-              <div style={ { display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', color: 'white' } }>
+              { canMint() && <div style={ { display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', color: 'white' } }>
                 <QuantityButton onClick={() => decrementQuantity(quantity)}style={{ fontSize: '30px', marginRight: '20px' }}>-</QuantityButton>
                 <h3>{ quantity }</h3>
                 <QuantityButton onClick={() => incrementQuantity(quantity)} style={{ fontSize: '30px', marginLeft: '20px' }}>+</QuantityButton>
-              </div>
-              { <MintButton src="mint.png" onClick={mint}/> }
+              </div>}
+              { canMint() && <MintButton src="mint.png" onClick={mint}/> }
             </NFT>
           </DesContainer>
         </MintContainer>
