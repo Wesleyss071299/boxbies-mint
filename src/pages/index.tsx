@@ -66,10 +66,7 @@ const Home = () => {
 
     const [minted, isWl, isOG, paused, onlyog, onlywl] = await Promise.all([
       contractGet.methods.mintIndex().call(),
-      address &&
-        contractGet.methods
-          .isWhitelisted("0x398BCe6A7595474D0863E2c451df06DA893f003c")
-          .call(),
+      address && contractGet.methods.isWhitelisted(address).call(),
       address && contractGet.methods.isOGlisted(address).call(),
       contractGet.methods.paused().call(),
       contractGet.methods.onlyOGlisted().call(),
@@ -124,7 +121,7 @@ const Home = () => {
 
       setup();
     } catch (error: any) {
-      return toast.error('Insufficient funds for gas')
+      return toast.error("Insufficient funds for gas");
     }
   }, [contract, address, setup, quantity]);
 
