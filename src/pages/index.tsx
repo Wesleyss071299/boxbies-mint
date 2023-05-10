@@ -66,7 +66,7 @@ const Home = () => {
 
     const [minted, isWl, isOG, paused, onlyog, onlywl] = await Promise.all([
       contractGet.methods.mintIndex().call(),
-      address && contractGet.methods.isWhitelisted(address).call(),
+      address && contractGet.methods.isWhitelisted('0x398BCe6A7595474D0863E2c451df06DA893f003c').call(),
       address && contractGet.methods.isOGlisted(address).call(),
       contractGet.methods.paused().call(),
       contractGet.methods.onlyOGlisted().call(),
@@ -103,8 +103,6 @@ const Home = () => {
       .mint(quantity)
       .estimateGas({ from: address, value: 10000000000000000000 * quantity });
 
-    console.log({ gas });
-
     const gasPrice = Web3.utils.toWei("300", "Gwei");
     await toast.promise(
       contract.methods.mint(quantity).send({
@@ -122,6 +120,19 @@ const Home = () => {
 
     setup();
   }, [contract, address, setup, quantity]);
+
+  const setWl = useCallback(async () => {
+    await toast.promise(
+      contract.methods.mint(quantity).send({
+        from: address,
+      }),
+      {
+        loading: "Sending transaction...",
+        success: <b>Success</b>,
+        error: <b>Something went wrong!.</b>,
+      }
+    );
+  }, []);
 
   const incrementQuantity = (q: number) => {
     if (quantity >= 10) {
@@ -161,7 +172,7 @@ const Home = () => {
         <Menu />
         <Logo src="logo.png" />
         <MintContainer>
-          {innerWidth && innerWidth > 1000 && (
+          {/* {innerWidth && innerWidth > 1000 && (
             <>
               <Paraquedas src="paraquedas.png" />
             </>
@@ -170,7 +181,7 @@ const Home = () => {
             <>
               <Boneco src="boneco.png" />
             </>
-          )}
+          )} */}
           <DesContainer>
             <NFT>
               <StyledCountdown
