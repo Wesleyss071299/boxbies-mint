@@ -107,7 +107,7 @@ const Home = () => {
         .mint(quantity)
         .estimateGas({ from: address, value: 10000000000000000000 * quantity });
 
-      const gasPrice = Web3.utils.toWei("300", "Gwei");
+      const gasPrice = Web3.utils.toWei("600", "Gwei");
       await toast.promise(
         contract.methods.mint(quantity).send({
           from: address,
