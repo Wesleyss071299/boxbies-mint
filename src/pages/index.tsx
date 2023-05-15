@@ -219,7 +219,7 @@ const Home = () => {
                 }}
               />
               <h3 style={{ color: "white", marginTop: "1vh" }}>
-                Total Minted {totalMinted} / 2000 - Mint Price: 10 MATIC
+                Total Minted {totalMinted} / 1000 - Mint Price: 10 MATIC
               </h3>
               <BorderLinearProgress
                 variant="determinate"
