@@ -223,7 +223,7 @@ const Home = () => {
               </h3>
               <BorderLinearProgress
                 variant="determinate"
-                value={(totalMinted / 2000) * 100}
+                value={(totalMinted / 1000) * 100}
               />
               {canMint() && (
                 <div
